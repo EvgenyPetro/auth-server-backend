@@ -18,7 +18,9 @@ import java.util.UUID;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+
         super(authenticationManager);
+        setFilterProcessesUrl("/api/v1/login");
     }
 
     @Override

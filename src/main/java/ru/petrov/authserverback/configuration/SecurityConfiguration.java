@@ -11,18 +11,17 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.petrov.authserverback.filters.JwtAuthenticationFilter;
 import ru.petrov.authserverback.filters.JwtAuthorizationFilter;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableGlobalMethodSecurity(
@@ -52,11 +51,14 @@ public class SecurityConfiguration {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeRequests(auth -> {
+                    auth.mvcMatchers(POST, "/api/v1/create-user").permitAll();
+                    auth.anyRequest().authenticated();
+                })
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(authorizationFilter, authenticationFilter.getClass())
+                .addFilterBefore(authorizationFilter, JwtAuthenticationFilter.class)
                 .cors(Customizer.withDefaults())
                 .exceptionHandling()
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
@@ -70,21 +72,6 @@ public class SecurityConfiguration {
                 .and()
                 .httpBasic().disable();
         return http.build();
-    }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails userOne = User
-                .withUsername("bill")
-                .password(passwordEncoder().encode("12345678"))
-                .authorities("USER")
-                .build();
-        UserDetails userTwo = User
-                .withUsername("john")
-                .password(passwordEncoder().encode("12345678"))
-                .authorities("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(userOne, userTwo);
     }
 
     @Bean
