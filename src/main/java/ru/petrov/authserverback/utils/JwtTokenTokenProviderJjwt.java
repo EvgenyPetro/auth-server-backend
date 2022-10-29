@@ -2,7 +2,9 @@ package ru.petrov.authserverback.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +14,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -73,11 +78,6 @@ public class JwtTokenTokenProviderJjwt implements JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .setId(UUID.randomUUID().toString())
                 .compact();
-    }
-
-    private boolean validateToken(String jwtToken) {
-        Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(jwtToken);
-        return true;
     }
 
 }

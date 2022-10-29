@@ -2,6 +2,7 @@ package ru.petrov.authserverback.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import ru.petrov.authserverback.entitys.User;
@@ -56,7 +57,7 @@ public class UserRepositoryInMemory implements UserRepository {
 
     @Override
     public User findUserByUsername(String username) {
-        return USER_DATABASE.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElseThrow();
+        return USER_DATABASE.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
     }
 
 
