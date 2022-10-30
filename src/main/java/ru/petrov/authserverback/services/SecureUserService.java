@@ -10,7 +10,6 @@ import ru.petrov.authserverback.entitys.Role;
 import ru.petrov.authserverback.entitys.User;
 import ru.petrov.authserverback.model.SecureUser;
 import ru.petrov.authserverback.model.SignUpRequest;
-import ru.petrov.authserverback.repositories.RoleRepository;
 import ru.petrov.authserverback.repositories.UserRepository;
 
 import java.util.ArrayList;
