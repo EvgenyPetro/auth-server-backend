@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.petrov.authserverback.entitys.Role;
 import ru.petrov.authserverback.entitys.User;
 import ru.petrov.authserverback.model.SecureUser;
 import ru.petrov.authserverback.model.SignUpRequest;
+import ru.petrov.authserverback.repositories.RoleRepository;
 import ru.petrov.authserverback.repositories.UserRepository;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class SecureUserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,6 +39,7 @@ public class SecureUserService implements UserDetailsService {
                 signUpRequest.username(),
                 passwordEncoder.encode(signUpRequest.password()),
                 new ArrayList<>());
+        user.getUserRoles().add(new Role(2, "USER"));
         return userRepository.save(user);
     }
 
