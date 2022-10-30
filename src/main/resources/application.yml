@@ -1,2 +1,11 @@
 server:
   port: 9000
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_user
+    password: root
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

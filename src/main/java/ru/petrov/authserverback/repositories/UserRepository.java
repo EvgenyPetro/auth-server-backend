@@ -1,15 +1,12 @@
 package ru.petrov.authserverback.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.petrov.authserverback.entitys.User;
-import ru.petrov.authserverback.model.SignUpRequest;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<User, String> {
 
-    User createUser(SignUpRequest signUpRequest);
-    boolean deleteUser(String id);
-    List<User> findAllUser();
-    User findUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
 
 }

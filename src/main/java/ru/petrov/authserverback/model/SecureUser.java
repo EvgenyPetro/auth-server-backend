@@ -2,10 +2,13 @@ package ru.petrov.authserverback.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.petrov.authserverback.entitys.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 public class SecureUser implements UserDetails {
@@ -17,8 +20,9 @@ public class SecureUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getUserRole();
-
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        user.getUserRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
+        return authorities;
     }
 
     @Override
