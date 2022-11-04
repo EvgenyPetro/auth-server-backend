@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.petrov.authserverback.model.SignUpRequest;
 import ru.petrov.authserverback.services.SecureUserService;
@@ -30,5 +31,10 @@ public class UserController {
     @DeleteMapping("api/v1/user/{id}")
     public ResponseEntity<?> createUser(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.deleteUser(id));
+    }
+
+    @GetMapping("api/v1/userinfo")
+    public ResponseEntity<Authentication> getUserInfo(Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.OK).body(authentication);
     }
 }

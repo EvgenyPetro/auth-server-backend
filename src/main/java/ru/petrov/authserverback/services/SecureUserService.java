@@ -52,7 +52,5 @@ public class SecureUserService implements UserDetailsService {
             return true;
         }
         return true;
-
-
     }
 }
