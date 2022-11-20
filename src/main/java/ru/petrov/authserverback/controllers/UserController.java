@@ -12,28 +12,29 @@ import ru.petrov.authserverback.services.SecureUserService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/")
 public class UserController {
 
     private final SecureUserService service;
 
-    @PostMapping("api/v1/create-user")
+    @PostMapping("create-user")
     public ResponseEntity<?> createUser(@RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(signUpRequest));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("api/v1/users")
+    @GetMapping("users")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.findAllUser());
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("api/v1/user/{id}")
+    @DeleteMapping("user/{id}")
     public ResponseEntity<?> createUser(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.deleteUser(id));
     }
 
-    @GetMapping("api/v1/userinfo")
+    @GetMapping("userinfo")
     public ResponseEntity<Authentication> getUserInfo(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(authentication);
     }
