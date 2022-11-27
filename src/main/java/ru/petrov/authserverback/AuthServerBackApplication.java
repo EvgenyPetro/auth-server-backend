@@ -19,13 +19,13 @@ public class AuthServerBackApplication {
         SpringApplication.run(AuthServerBackApplication.class, args);
     }
 
-    @Bean
+//    @Bean
     public CommandLineRunner run(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             userRepository.deleteAll();
             roleRepository.deleteAll();
 
-            User admin = new User(null,
+            User admin = new User(null,w
                     "bill",
                     "jeyn",
                     "bill",

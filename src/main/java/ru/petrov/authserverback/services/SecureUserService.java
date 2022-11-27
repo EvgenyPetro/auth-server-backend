@@ -2,7 +2,6 @@ package ru.petrov.authserverback.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +14,6 @@ import ru.petrov.authserverback.model.SecureUser;
 import ru.petrov.authserverback.model.SignUpRequest;
 import ru.petrov.authserverback.repositories.UserRepository;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class SecureUserService implements UserDetailsService {
                 .findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User {} not found", username)));
         log.info("User auth: {}", user.getId());
-        return new SecureUser(user);
+        return new SecureUser(user, user.getId());
     }
 
     public User createUser(SignUpRequest signUpRequest) {

@@ -11,12 +11,16 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+
 public class SecureUser implements UserDetails {
-    public SecureUser(User user) {
-        this.user = user;
-    }
 
     private User user;
+    private String id;
+
+    public SecureUser(User user, String id) {
+        this.user = user;
+        this.id = id;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
