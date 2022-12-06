@@ -9,3 +9,23 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 773056160900-f7mfjvrn2gdcr8s59j6heqr1fdmi5d67.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - profile
+              - email
+
+          github:
+            client-id: b97dda3e789594a729a5
+            client-secret: 325bc223eaaff5c6f5da933cf74774a5655fd773
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"

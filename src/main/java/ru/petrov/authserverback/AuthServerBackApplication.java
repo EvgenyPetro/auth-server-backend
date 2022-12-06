@@ -20,37 +20,37 @@ public class AuthServerBackApplication {
     }
 
 //    @Bean
-    public CommandLineRunner run(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            userRepository.deleteAll();
-            roleRepository.deleteAll();
-
-            User admin = new User(null,w
-                    "bill",
-                    "jeyn",
-                    "bill",
-                    passwordEncoder.encode("12345678"),
-                    new ArrayList<>());
-            User user = new User(null,
-                    "bill1",
-                    "jeyn1",
-                    "bill1",
-                    passwordEncoder.encode("12345678"),
-                    new ArrayList<>());
-
-            Role adminRole = new Role(null, "ADMIN");
-            Role userRole = new Role(null, "USER");
-
-            roleRepository.save(adminRole);
-            roleRepository.save(userRole);
-
-            admin.getUserRoles().add(adminRole);
-            user.getUserRoles().add(userRole);
-
-            userRepository.save(admin);
-            userRepository.save(user);
-
-
-        };
-    }
+//    public CommandLineRunner run(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+//        return args -> {
+//            userRepository.deleteAll();
+//            roleRepository.deleteAll();
+//
+//            User admin = new User(null,
+//                    "bill",
+//                    "jeyn",
+//                    "bill",
+//                    passwordEncoder.encode("12345678"),
+//                    new ArrayList<>());
+//            User user = new User(null,
+//                    "bill1",
+//                    "jeyn1",
+//                    "bill1",
+//                    passwordEncoder.encode("12345678"),
+//                    new ArrayList<>());
+//
+//            Role adminRole = new Role(null, "ADMIN");
+//            Role userRole = new Role(null, "USER");
+//
+//            roleRepository.save(adminRole);
+//            roleRepository.save(userRole);
+//
+//            admin.getUserRoles().add(adminRole);
+//            user.getUserRoles().add(userRole);
+//
+//            userRepository.save(admin);
+//            userRepository.save(user);
+//
+//
+//        };
+//    }
 }

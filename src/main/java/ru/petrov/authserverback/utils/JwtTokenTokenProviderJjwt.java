@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import ru.petrov.authserverback.model.SecureUser;
+import ru.petrov.authserverback.model.SecurityUserDetails;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -66,13 +66,12 @@ public class JwtTokenTokenProviderJjwt implements JwtTokenProvider {
 
         return new User(user, "", authorities);
 
-
     }
 
     private String generatedJwtToken(Authentication authentication, int jwtExpiration, String jwtSecret) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .setSubject(((SecureUser) authentication.getPrincipal()).getId())
+                .setSubject(((SecurityUserDetails) authentication.getPrincipal()).getId())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plus(jwtExpiration, ChronoUnit.HOURS)))
                 .claim("roles", authentication.getAuthorities())

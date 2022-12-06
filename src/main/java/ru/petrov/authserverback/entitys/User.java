@@ -26,8 +26,9 @@ public class User {
     private String firstName;
     private String lastName;
     @Column(unique = true)
-    private String username;
+    private String email;
     private String password;
+    private String avatar;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> userRoles = new ArrayList<>();
 

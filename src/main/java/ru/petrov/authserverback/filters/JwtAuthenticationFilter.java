@@ -31,10 +31,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setFilterProcessesUrl("/api/v1/login");
     }
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-
 
         LoginRequest loginRequest;
         try {
@@ -46,8 +44,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password());
 
         return getAuthenticationManager().authenticate(authentication);
-
-
     }
 
     @Override
@@ -64,6 +60,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         new ObjectMapper().writeValue(response.getOutputStream(), idToken);
     }
-
-
 }

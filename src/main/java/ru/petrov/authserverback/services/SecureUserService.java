@@ -2,6 +2,7 @@ package ru.petrov.authserverback.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.petrov.authserverback.entitys.Role;
 import ru.petrov.authserverback.entitys.User;
 import ru.petrov.authserverback.exeptionapi.exeptions.EmailAlreadyExist;
-import ru.petrov.authserverback.model.SecureUser;
+import ru.petrov.authserverback.model.SecurityUserDetails;
 import ru.petrov.authserverback.model.SignUpRequest;
 import ru.petrov.authserverback.repositories.UserRepository;
 
@@ -27,12 +28,17 @@ public class SecureUserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository
-                .findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User {} not found", username)));
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User {} not found", email)));
         log.info("User auth: {}", user.getId());
-        return new SecureUser(user, user.getId());
+
+        return new SecurityUserDetails(user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getUserRoles().stream().map((r)
+                        -> new SimpleGrantedAuthority(r.getRoleName())).toList());
     }
 
     public User createUser(SignUpRequest signUpRequest) {
@@ -41,6 +47,7 @@ public class SecureUserService implements UserDetailsService {
                 signUpRequest.lastName(),
                 signUpRequest.username(),
                 passwordEncoder.encode(signUpRequest.password()),
+                "",
                 new ArrayList<>());
         user.getUserRoles().add(new Role(2, "USER"));
 
