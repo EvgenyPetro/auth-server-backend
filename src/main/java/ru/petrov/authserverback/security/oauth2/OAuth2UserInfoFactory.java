@@ -9,6 +9,8 @@ public class OAuth2UserInfoFactory {
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase("github")) {
             return new GithubOAuth2UserInfo(attributes);
+        } else if (registrationId.equalsIgnoreCase("vk")) {
+            return new VkOauthUserInfo(attributes);
         } else {
             throw new RuntimeException("Sorry! Login with " + registrationId + " is not supported yet.");
         }
